@@ -27,7 +27,7 @@
     "no-console": 1,
     "quotes": [
       "error",
-      "single",
+      "double",
       {
         "allowTemplateLiterals": true
       }
