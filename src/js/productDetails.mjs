@@ -37,7 +37,33 @@ function productDetailsTemplate(product) {
     productImage.src = product.Image;
     productImage.alt = product.NameWithoutBrand;
 
-    document.getElementById('productPrice').textContent = product.FinalPrice;
+   //---- ADDED DISCOUNT TO PRODUCT DETAIL PAGES
+    const finalPriceEl = document.getElementById('productPrice');
+    const originalPriceEl = document.getElementById('originalPrice');
+    const discountBadgeEl = document.getElementById('discountBadge');
+
+    
+    finalPriceEl.textContent = `$${product.FinalPrice}`;
+
+    //This check if the item has a discount
+    if (product.ListPrice > product.FinalPrice) {
+        const cashSavings = product.ListPrice - product.FinalPrice;
+        const discountPercent = Math.round((cashSavings / product.ListPrice) * 100);
+
+        // Original Price
+        originalPriceEl.textContent = `$${product.ListPrice}`;
+        originalPriceEl.style.display = "inline";
+
+        // Calculated savings
+        discountBadgeEl.textContent = `${discountPercent}% OFF`;
+        discountBadgeEl.style.display = "inline-block";
+    } else {
+        // If the item not sale, hide optional layout parts
+        originalPriceEl.style.display = "none";
+        discountBadgeEl.style.display = "none";
+    }
+    // --- DISCOUNT RENDER ADDED END-------
+   
     document.getElementById('productColor').textContent = product.Colors[0].ColorName;
     document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
 
