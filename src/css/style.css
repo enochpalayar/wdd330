@@ -203,6 +203,31 @@ button {
   width: 100%;
 }
 
+/* --- Product Detail Discount --- */
+.product-price-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0.5em 0 1em 0;
+}
+
+/* Original price with strike-through line */
+.original-price {
+  text-decoration: line-through;
+  color: #767676;
+  font-size: 0.95em;
+}
+
+.discount-badge {
+  background-color: var(--tertiary-color);
+  color: white;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: var(--small-font);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
 /* Start cart list card styles */
 .cart-card {
   display: grid;
