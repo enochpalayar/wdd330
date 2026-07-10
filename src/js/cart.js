@@ -25,4 +25,22 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
+function calculateTotal() {
+  const cartItems = getLocalStorage("so-cart");
+  const total = cartItems.reduce((acc, item) => acc + item.FinalPrice, 0);
+  document.querySelector(".cart-total").textContent = `Total: $${total.toFixed(2)}`;
+}
+
+function showCartFooter() {
+  const cartItems = getLocalStorage("so-cart");
+  const cartFooter = document.querySelector(".cart-footer");
+  if (cartItems.length > 0) {
+    cartFooter.style.display = "block";
+  } else {
+    cartFooter.style.display = "none";
+  }
+}
+
+showCartFooter();
 renderCartContents();
+calculateTotal();
