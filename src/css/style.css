@@ -266,6 +266,12 @@ button {
   grid-column: 3;
 }
 
+.cart-footer {
+  text-align: center;
+  padding: 1em;
+  font-size: var(--large-font);
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
