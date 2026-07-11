@@ -1,4 +1,5 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { renderCartCount } from "./cartCount.mjs";
 
 export default class ProductDetails {
 
@@ -10,9 +11,9 @@ export default class ProductDetails {
 
     async init() {
         this.product = await this.dataSource.findProductById(this.productId);
-       
+
         this.renderProductDetails();
-        
+
         document
             .getElementById('addToCart')
             .addEventListener('click', this.addProductToCart.bind(this));
@@ -22,6 +23,7 @@ export default class ProductDetails {
         const cartItems = getLocalStorage("so-cart") || [];
         cartItems.push(this.product);
         setLocalStorage("so-cart", cartItems);
+        renderCartCount();
     }
 
     renderProductDetails() {
@@ -37,12 +39,12 @@ function productDetailsTemplate(product) {
     productImage.src = product.Image;
     productImage.alt = product.NameWithoutBrand;
 
-   //---- ADDED DISCOUNT TO PRODUCT DETAIL PAGES
+    //---- ADDED DISCOUNT TO PRODUCT DETAIL PAGES
     const finalPriceEl = document.getElementById('productPrice');
     const originalPriceEl = document.getElementById('originalPrice');
     const discountBadgeEl = document.getElementById('discountBadge');
 
-    
+
     finalPriceEl.textContent = `$${product.FinalPrice}`;
 
     //This check if the item has a discount
@@ -63,7 +65,7 @@ function productDetailsTemplate(product) {
         discountBadgeEl.style.display = "none";
     }
     // --- DISCOUNT RENDER ADDED END-------
-   
+
     document.getElementById('productColor').textContent = product.Colors[0].ColorName;
     document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
 
