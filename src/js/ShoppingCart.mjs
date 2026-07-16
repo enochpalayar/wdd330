@@ -5,7 +5,7 @@ function cartItemTemplate(item) {
     return `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Images.PrimarySmall}"
+      src="${item.Images?.PrimarySmall}"
       alt="${item.Name}"
     />
   </a>
