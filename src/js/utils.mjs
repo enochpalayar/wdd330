@@ -37,3 +37,35 @@ export function renderListWithTemplate(template, parentElement, list, position =
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
+
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
+
+  if (callback) {
+    callback(data);
+  }
+}
+
+export async function loadTemplate(path) {
+  const response = await fetch(path);
+  if (response.ok) {
+    const template = await response.text();
+    return template;
+  }
+}
+
+export function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate("/partials/header.html");
+  const footerTemplate = await loadTemplate("/partials/footer.html");
+
+  const headerElement = document.getElementById("main-header");
+  const footerElement = document.getElementById("main-footer");
+
+  if (headerElement && headerTemplate) {
+    renderWithTemplate(headerTemplate, headerElement);
+  }
+
+  if (footerElement && footerElement) {
+    renderWithTemplate(footerTemplate, footerElement);
+  }
+}
