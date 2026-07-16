@@ -203,18 +203,65 @@ button {
   width: 100%;
 }
 
+/*Homepage Category Grid*/
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 3rem 0;
+  gap: 2rem;
+}
+
+.product-grid li {
+  text-align: center;
+  flex: 1 1 150px;
+  max-width: 180px;
+}
+
+.product-grid a {
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-family: var(--font-headline);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-grid img {
+  width: 100%;
+  max-width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin: 0 auto 0.75rem auto;
+  display: block;
+  transition: transform 0.25s ease-in-out;
+}
+
+.product-grid a:hover img {
+  transform: scale(1.1);
+}
+
+.product-grid h2 {
+  font-size: var(--large-font);
+  font-weight: normal;
+  margin-top: 0.5rem;
+}
+
+/*----End of Product Grid------*/
+
 /* --- Product Detail Discount --- */
 .product-price-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0.5em 0 1em 0;
+  gap: 10px;
+  margin: 10px 0;
 }
 
 /* Original price with strike-through line */
 .original-price {
   text-decoration: line-through;
-  color: #767676;
+  color: #777;
   font-size: 0.95em;
 }
 
@@ -225,8 +272,41 @@ button {
   font-weight: bold;
   font-size: var(--small-font);
   border-radius: 4px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.85px;
+  text-transform: uppercase;
 }
+
+/*----End of Discount styling*/
+
+/* Style the select dropdown */
+#sortSelector {
+  padding: 8px 16px;
+  font-family: inherit;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  float: none;
+}
+
+#sortSelector:hover {
+  border-color: #999;
+}
+
+.product-listing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 10px;
+}
+
+.product-listing-header h2 {
+  margin: 0;
+}
+
+/* End dropdown style*/
 
 /* Start cart list card styles */
 .cart-card {
