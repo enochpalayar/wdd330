@@ -36,6 +36,16 @@ header {
   padding: 0.5rem;
 }
 
+.alert-list {
+  list-style: none;
+}
+.alert-banner {
+  text-align: center;
+  padding: 0.75rem;
+  color: #fff;
+  font-weight: bold;
+}
+
 p {
   padding: 0.75rem;
 }
