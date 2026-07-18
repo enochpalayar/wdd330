@@ -24,6 +24,14 @@ export default class ProductDetails {
         setLocalStorage("so-cart", cartItems);
     }
 
+    checkDuplicateInCart() {
+        const cartItems = getLocalStorage("so-cart") || [];
+        if (cartItems.some(item => item.Id === this.productId)) {
+            document.getElementById('addToCart').disabled = true;
+            document.getElementById('addToCart').textContent = 'Already in Cart';
+        }
+    }
+
     renderProductDetails() {
         productDetailsTemplate(this.product);
     }
