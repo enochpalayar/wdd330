@@ -21,8 +21,8 @@ export default class ProductList {
     }
 
     async init() {
-        const list = await this.datasource.getData();
-
+        const list = await this.dataSource.getData(this.category);
+        
         const originalTents = ["880RR", "985RF", "985PR", "344YJ"];
 
         const filteredList = list.filter(product => originalTents.includes(product.Id));

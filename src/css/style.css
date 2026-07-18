@@ -42,7 +42,7 @@ p {
 
 .logo {
   line-height: 60px;
-  width: 245px;
+  width: 100%;
   overflow: hidden;
   display: flex;
   font-size: 30px;
