@@ -26,11 +26,32 @@ export default class ShoppingCart {
 
     init() {
         const cartItems = getLocalStorage(this.key) || [];
-        this.renderCartContents(cartItems);
+      this.renderCartContents(cartItems);
+      
+      if (cartItems.length > 0) {
+        this.renderTotal(cartItems);
+      }
     }
 
     renderCartContents(items) {
         const htmlItems = items.map((item) => cartItemTemplate(item));
         this.parentElement.innerHTML = htmlItems.join("");
     }
+
+  renderTotal(items) {
+    const cartFooter = document.querySelector(".cart-footer");
+    if (cartFooter) {
+      cartFooter.classList.remove("hide");
+    }
+
+    const total = items.reduce((sum, item) => sum + item.FinalPrice * (item.Quantity || 1),
+      0
+    );
+
+    const totalElement = document.querySelector(".cart-total");
+    if (totalElement) {
+      totalElement.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`
+    }
+
+  }
 }
