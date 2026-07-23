@@ -54,6 +54,25 @@ async function loadTemplate(path) {
   }
 }
 
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const countElement = document.querySelector(".cart-count");
+
+  if (!countElement) return;
+
+  const totalCount = Array.isArray(cartItems)
+    ? cartItems.reduce((sum, item) => sum + (item.Quantity || 1), 0)
+    : 0;
+
+  countElement.textContent = totalCount;
+
+  if (totalCount > 0) {
+    countElement.classList.remove("hide");
+  } else {
+    countElement.classList.add("hide");
+  }
+}
+
 export async function loadHeaderFooter() {
   const headerTemplate = await loadTemplate("/partials/header.html");
   const footerTemplate = await loadTemplate("/partials/footer.html");
@@ -61,6 +80,42 @@ export async function loadHeaderFooter() {
   const headerElement = document.querySelector("#main-header");
   const footerElement = document.querySelector("#main-footer");
 
-  renderWithTemplate(headerTemplate, headerElement);
-  renderWithTemplate(footerTemplate, footerElement);
+  if (headerElement && headerTemplate) {
+    renderWithTemplate(headerTemplate, headerElement);
+  }
+  if (footerElement && footerTemplate) {
+    renderWithTemplate(footerTemplate, footerElement);
+  }
+
+  updateCartCount();
+}
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+
+  alert.innerHTML = `<span>${message}</span><span class="alert-close">X</span>`;
+
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName === "SPAN" && e.target.classList.contains("alert-close")) {
+      const main = document.querySelector("main");
+      if (main && main.contains(this)) {
+        main.removeChild(this);
+      }
+    }
+  });
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.prepend(alert);
+  }
+
+  if (scroll) {
+    window.scrollTo(0, 0);
+  }
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => alert.remove());
 }
