@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage, updateCartCount } from "./utils.mjs";
 
 export default class ProductDetails {
 
@@ -11,17 +11,29 @@ export default class ProductDetails {
     async init() {
         this.product = await this.dataSource.findProductById(this.productId);
        
-        this.renderProductDetails();
+        this.renderProductDetails("main");
         
         document
-            .getElementById('addToCart')
-            .addEventListener('click', this.addProductToCart.bind(this));
+            .getElementById("addToCart")
+            .addEventListener("click", this.addToCart.bind(this));
     }
 
-    addProductToCart() {
-        const cartItems = getLocalStorage("so-cart") || [];
-        cartItems.push(this.product);
-        setLocalStorage("so-cart", cartItems);
+    addToCart() {
+        let cart = getLocalStorage("so-cart") || [];
+        if (!Array.isArray(cart)) cart = [];
+
+        const existingItem = cart.find((item) => item.Id === this.product.Id);
+
+        if (existingItem) {
+            existingItem.Quantity = (existingItem.Quantity || 1) + 1;
+        } else {
+            const itemToAdd = { ...this.product, Quantity: 1 };
+            cart.push(itemToAdd);
+        }
+
+        setLocalStorage("so-cart", cart);
+        updateCartCount();
+        alertMessage(`${this.product.NameWithoutBrand || this.product.Name} added to cart!`);
     }
 
     renderProductDetails() {

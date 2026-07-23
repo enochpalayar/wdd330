@@ -6,14 +6,32 @@ loadHeaderFooter();
 const myCheckout = new CheckoutProcess("so-cart", ".order-summary");
 myCheckout.init();
 
-document.querySelector("#zip").addEventListener("blur", () => {
-  myCheckout.calculateOrderTotal();
-});
+const zipInput = document.querySelector("#zip");
+if (zipInput) {
+  zipInput.addEventListener("blur", () => {
+    myCheckout.calculateOrderTotal();
+  });
+}
 
-document.querySelector("#checkout-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const form = e.target;
+const submitBtn = document.querySelector("#checkoutSubmit");
+const myForm =
+  document.forms["checkout"] || document.querySelector("#checkout-form");
 
-  myCheckout.calculateOrderTotal();
-  myCheckout.checkout(form);
-});
+if (myForm) {
+  myForm.addEventListener("submit", (e) => e.preventDefault());
+}
+
+if (submitBtn) {
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (myForm) {
+      const chck_status = myForm.checkValidity();
+      myForm.reportValidity();
+
+      if (chck_status) {
+        myCheckout.checkout(myForm);
+      }
+    }
+  });
+}

@@ -1,4 +1,4 @@
-import { getLocalStorage } from "./utils.mjs";
+import { alertMessage, getLocalStorage, removeAllAlerts } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 
@@ -6,7 +6,7 @@ function formDataToJSON(formElement) {
     const formData = new FormData(formElement);
     const convertedJSON = {};
     formData.forEach((value, key) => {
-        convertedJSON[key] = value; 
+        convertedJSON[key] = value;
     });
     return convertedJSON;
 }
@@ -33,7 +33,13 @@ export default class CheckoutProcess {
 
     init() {
         this.list = getLocalStorage(this.key) || [];
+        if (this.list.length === 0) {
+            alertMessage("Your cart is empty. Redirecting to cart...", false);
+            window.location.href = "/cart/index.html";
+            return;
+        }
         this.calculateItemSubTotal();
+        this.calculateOrderTotal();
     }
 
     calculateItemSubTotal() {
@@ -46,7 +52,7 @@ export default class CheckoutProcess {
         );
 
         if (countElement) countElement.innerText = totalQuantity;
-        if (summaryElement) summaryElement.innerText = `$${this.itemTotal.toFixed(2)}`;
+        if (summaryElement) summaryElement.innerText= `$${this.itemTotal.toFixed(2)}`;
     }
 
     calculateOrderTotal() {
@@ -55,7 +61,7 @@ export default class CheckoutProcess {
         this.shipping = totalQuantity > 0 ? 10 + (totalQuantity - 1) * 2 : 0;
         this.tax = this.itemTotal * 0.06;
         this.orderTotal = this.itemTotal + this.shipping + this.tax;
-        
+
         this.displayOrderTotals();
     }
 
@@ -70,6 +76,13 @@ export default class CheckoutProcess {
     }
 
     async checkout(form) {
+        if (this.list.length === 0) {
+            alertMessage("Your cart is empty. Cannot process checkout.", true);
+            return;
+        }
+
+        this.calculateOrderTotal();
+
         const jsonPayload = formDataToJSON(form);
 
         jsonPayload.orderDate = new Date().toISOString();
@@ -77,14 +90,32 @@ export default class CheckoutProcess {
         jsonPayload.tax = this.tax.toFixed(2);
         jsonPayload.shipping = this.shipping.toFixed(2);
         jsonPayload.items = packageItems(this.list);
-    
+
         try {
             const services = new ExternalServices();
             const res = await services.checkout(jsonPayload);
-            console.log("Server Response:", res);
-            return res;
+            //console.log("Server Response:", res);
+            //return res;
+            localStorage.removeItem(this.key);
+            removeAllAlerts();
+            window.location.href = "/checkout/success.html";
+
         } catch (err) {
-            console.error("Checkout failed:", err);
+            //console.error("Checkout failed:", err);
+            removeAllAlerts();
+
+            if (err.name === "servicesError") {
+                if (typeof err.message === "object" && err.message !== null) {
+                    for (const key in err.message) {
+                        alertMessage(err.message[key], true);
+                    }
+                } else {
+                    alertMessage(err.message, true);
+                }
+            } else {
+                alertMessage("An unexpected error occured during checkout. Please try again.");
+            }
+
         }
     }
 }
