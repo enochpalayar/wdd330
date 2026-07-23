@@ -217,6 +217,137 @@ button {
   width: 100%;
 }
 
+/*Checkout Page*/
+.checkout-container {
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem 1rem;
+}
+
+.checkout-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.checkout-form fieldset {
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  background-color: #ffffff;
+}
+
+.checkout-form legend {
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+  color: var(--dark-grey);
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row--3 {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.checkout-form label {
+  font-size: var(--small-font);
+  font-weight: bold;
+  margin-bottom: 0.35rem;
+  color: var(--dark-grey);
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+}
+
+.checkout-form input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(82, 91, 15, 0.2);
+}
+
+.order-summary {
+  background-color: #fdfdfd;
+  border-top: 3px solid var(--primary-color);
+}
+
+.order-summary p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.summary-divider {
+  border: 0;
+  border-top: 1px solid var(--light-grey);
+  margin: 0.5rem 0;
+}
+
+.order-total-row {
+  font-size: 1.1rem;
+  color: var(--dark-grey);
+}
+
+#checkout-btn,
+#checkoutSubmit {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  margin: 1.5rem auto 0 auto;
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-size: large;
+  font-family: var(--font-body);
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+#checkout-btn:hover,
+#checkoutSubmit:hover {
+  background-color: var(--tertiary-color);
+}
+
+@media screen and (max-width: 550px) {
+  .form-row,
+  .form-row--3 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+/*Checkout Page End*/
+
 /*Homepage Category Grid*/
 .product-grid {
   display: flex;
