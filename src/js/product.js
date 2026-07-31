@@ -9,6 +9,21 @@ const productId = getParam("product");
 const product = new ProductDetails(productId, dataSource);
 product.init();
 
+const description = document.querySelector(".description");
+
+const dialog = document.querySelector("#descriptionDialog");
+const dialogContent = document.querySelector("#descriptionDialog div");
+const closeButton = document.querySelector("#closeDialog");
+
+description.addEventListener("click", () => {
+    dialogContent.innerHTML = "Enjoy a fun night under stars with your favorite people in The North Face's Talus four-person tent, featuring durable construction with a roomy interior, an advanced DAC Featherlite NSL pole system and aneasy to pitch design.";
+    dialog.showModal();
+});
+
+closeButton.addEventListener("click", () => {
+    dialog.close();
+});
+
 //function addProductToCart(product) {
 //const cartItems = getLocalStorage("so-cart") || [];
 //cartItems.push(product);

@@ -266,6 +266,42 @@ button {
   grid-column: 3;
 }
 
+.description {
+  padding: 1em;
+  line-height: 1.5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  animation: size 2.5s linear infinite;
+}
+
+dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    display 0.3s ease; 
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px); 
+}
+
+dialog[open] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
