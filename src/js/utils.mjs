@@ -90,6 +90,7 @@ export async function loadHeaderFooter() {
   updateCartCount();
 }
 
+// Alert message function to display messages to the user
 export function alertMessage(message, scroll = true) {
   const alert = document.createElement("div");
   alert.classList.add("alert");
