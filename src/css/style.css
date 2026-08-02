@@ -700,7 +700,19 @@ footer {
   padding: 0 1rem;
 }
 
-/* Ensure breadcrumb inside header aligns with overall style */
+
+
 #site-breadcrumb .breadcrumb-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   margin: 0;
+  padding: 0;
+}
+
+#site-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  margin-right: 0.4rem;
+  color: #888;
 }
