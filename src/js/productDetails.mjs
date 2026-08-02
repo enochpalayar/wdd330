@@ -90,75 +90,68 @@ function productDetailsTemplate(product) {
  * Build a simple accessible breadcrumb using values already on the page.
  * Uses the product.Brand.Name as the category/brand and product.NameWithoutBrand as the product name.
  * If these are not available, falls back to reading the H2/H3 text on the page (the existing template uses them).
- * Breadcrumb will be inserted immediately before the first heading inside .product-detail (so it's "above the title").
+ * Breadcrumb will be inserted into the #site-breadcrumb container (below the navbar). If that container
+ * is not present, it will fall back to inserting above the product title as before.
  */
 function renderBreadcrumbFromPage(product) {
-    const container = document.querySelector('.product-detail');
-    if (!container) return;
+    const siteContainer = document.getElementById('site-breadcrumb');
 
     // find existing values (prefer the product object we already have)
     const categoryName = (product && product.Brand && product.Brand.Name) ||
-                         (container.querySelector('h2') && container.querySelector('h2').textContent.trim()) ||
-                         (container.querySelector('h3') && container.querySelector('h3').textContent.trim()) ||
+                         (document.querySelector('.product-detail h2') && document.querySelector('.product-detail h2').textContent.trim()) ||
+                         (document.querySelector('.product-detail h3') && document.querySelector('.product-detail h3').textContent.trim()) ||
                          null;
 
     const productName = (product && (product.NameWithoutBrand || product.Name)) ||
-                        (container.querySelector('h3') && container.querySelector('h3').textContent.trim()) ||
-                        (container.querySelector('h2') && container.querySelector('h2').textContent.trim()) ||
+                        (document.querySelector('.product-detail h3') && document.querySelector('.product-detail h3').textContent.trim()) ||
+                        (document.querySelector('.product-detail h2') && document.querySelector('.product-detail h2').textContent.trim()) ||
                         null;
 
-    if (!productName) return; // nothing sensible to show
+    // If we don't have a category or product name, don't render
+    if (!categoryName && !productName) return;
 
-    // Create or reuse breadcrumb nav
-    let breadcrumbNav = document.getElementById('breadcrumbs');
-    if (!breadcrumbNav) {
-        breadcrumbNav = document.createElement('nav');
-        breadcrumbNav.id = 'breadcrumbs';
-        breadcrumbNav.setAttribute('aria-label', 'Breadcrumb');
-        // insert breadcrumb immediately before the first heading inside .product-detail
-        const firstHeading = container.querySelector('h1,h2,h3,h4,h5');
-        if (firstHeading) {
-            container.insertBefore(breadcrumbNav, firstHeading);
-        } else {
-            // fallback to prepend to container
-            container.prepend(breadcrumbNav);
-        }
-    }
+    // Build nav element
+    const nav = document.createElement('nav');
+    nav.setAttribute('aria-label', 'Breadcrumb');
+    nav.id = 'breadcrumbs';
 
-    // Build list: Home › Category › Product
     const ol = document.createElement('ol');
     ol.className = 'breadcrumb-list';
 
-    // Helper to create list items
-    function makeItem(text, href, isCurrent = false) {
-        const li = document.createElement('li');
-        li.className = 'breadcrumb-item';
-        if (isCurrent) {
-            li.classList.add('current');
-            li.setAttribute('aria-current', 'page');
-            li.textContent = text;
-        } else {
-            const a = document.createElement('a');
-            a.textContent = text;
-            a.href = href || '#';
-            li.appendChild(a);
-        }
-        return li;
-    }
-
     // Home
-    ol.appendChild(makeItem('Home', '/'));
+    const liHome = document.createElement('li');
+    liHome.className = 'breadcrumb-item';
+    const aHome = document.createElement('a');
+    aHome.href = '/';
+    aHome.textContent = 'Home';
+    liHome.appendChild(aHome);
+    ol.appendChild(liHome);
 
-    // Category (if available)
+    // Category (if available) - for product page we show only the category (no count)
     if (categoryName) {
-        // You can replace '#' with a real category URL if your site exposes one
-        ol.appendChild(makeItem(categoryName, '#'));
+        const liCat = document.createElement('li');
+        liCat.className = 'breadcrumb-item current';
+        liCat.setAttribute('aria-current', 'page');
+        liCat.textContent = categoryName;
+        ol.appendChild(liCat);
     }
 
-    // Product (current)
-    ol.appendChild(makeItem(productName, null, true));
-
-    // Replace existing content
-    breadcrumbNav.innerHTML = '';
-    breadcrumbNav.appendChild(ol);
+    // If we have a site breadcrumb container, insert there; otherwise put above title in product-detail
+    if (siteContainer) {
+        nav.appendChild(ol);
+        siteContainer.innerHTML = '';
+        siteContainer.appendChild(nav);
+    } else {
+        // fallback: insert before first heading inside product-detail
+        const container = document.querySelector('.product-detail');
+        if (!container) return;
+        const firstHeading = container.querySelector('h1,h2,h3,h4,h5');
+        if (firstHeading) {
+            container.insertBefore(nav, firstHeading);
+            nav.appendChild(ol);
+        } else {
+            container.prepend(nav);
+            nav.appendChild(ol);
+        }
+    }
 }
