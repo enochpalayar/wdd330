@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, alertMessage, updateCartCount } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage, updateCartCount, getParam } from "./utils.mjs";
 
 export default class ProductDetails {
 
@@ -101,7 +101,8 @@ function renderBreadcrumbFromPage(product) {
                          (document.querySelector('.product-detail h2') && document.querySelector('.product-detail h2').textContent.trim()) ||
                          (document.querySelector('.product-detail h3') && document.querySelector('.product-detail h3').textContent.trim()) ||
                          null;
-
+    const category = getParam("category");
+  
     const productName = (product && (product.NameWithoutBrand || product.Name)) ||
                         (document.querySelector('.product-detail h3') && document.querySelector('.product-detail h3').textContent.trim()) ||
                         (document.querySelector('.product-detail h2') && document.querySelector('.product-detail h2').textContent.trim()) ||
@@ -128,8 +129,17 @@ function renderBreadcrumbFromPage(product) {
     ol.appendChild(liHome);
 
     
-    // Category (if available)
-    if (categoryName) {
+    // Category (if available) - prefer the real category from the URL,
+    // fall back to brand name for old links that don't have ?category=
+    if (category) {
+        const liCat = document.createElement('li');
+        liCat.className = 'breadcrumb-item';
+        const aCat = document.createElement('a');
+        aCat.href = `/product_listing/index.html?category=${category}`;
+        aCat.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        liCat.appendChild(aCat);
+        ol.appendChild(liCat);
+    } else if (categoryName) {
         const liCat = document.createElement('li');
         liCat.className = 'breadcrumb-item';
         liCat.textContent = categoryName;
