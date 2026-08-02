@@ -90,6 +90,7 @@ function productDetailsTemplate(product) {
  * Build a simple accessible breadcrumb using values already on the page.
  * Uses the product.Brand.Name as the category/brand and product.NameWithoutBrand as the product name.
  * If these are not available, falls back to reading the H2/H3 text on the page (the existing template uses them).
+ * Breadcrumb will be inserted immediately before the first heading inside .product-detail (so it's "above the title").
  */
 function renderBreadcrumbFromPage(product) {
     const container = document.querySelector('.product-detail');
@@ -97,11 +98,13 @@ function renderBreadcrumbFromPage(product) {
 
     // find existing values (prefer the product object we already have)
     const categoryName = (product && product.Brand && product.Brand.Name) ||
-                         (document.querySelector('h2') && document.querySelector('h2').textContent.trim()) ||
+                         (container.querySelector('h2') && container.querySelector('h2').textContent.trim()) ||
+                         (container.querySelector('h3') && container.querySelector('h3').textContent.trim()) ||
                          null;
 
     const productName = (product && (product.NameWithoutBrand || product.Name)) ||
-                        (document.querySelector('h3') && document.querySelector('h3').textContent.trim()) ||
+                        (container.querySelector('h3') && container.querySelector('h3').textContent.trim()) ||
+                        (container.querySelector('h2') && container.querySelector('h2').textContent.trim()) ||
                         null;
 
     if (!productName) return; // nothing sensible to show
@@ -112,8 +115,14 @@ function renderBreadcrumbFromPage(product) {
         breadcrumbNav = document.createElement('nav');
         breadcrumbNav.id = 'breadcrumbs';
         breadcrumbNav.setAttribute('aria-label', 'Breadcrumb');
-        // insert breadcrumb at the top of the product-detail block
-        container.prepend(breadcrumbNav);
+        // insert breadcrumb immediately before the first heading inside .product-detail
+        const firstHeading = container.querySelector('h1,h2,h3,h4,h5');
+        if (firstHeading) {
+            container.insertBefore(breadcrumbNav, firstHeading);
+        } else {
+            // fallback to prepend to container
+            container.prepend(breadcrumbNav);
+        }
     }
 
     // Build list: Home › Category › Product
