@@ -25,6 +25,15 @@ const myList = new ProductList(category, dataSource, listElement);
   }
 })();
 
+// Update breadcrumb when sorting changes (ProductList re-renders)
+const sortSelector = document.getElementById('sortSelector');
+if (sortSelector) {
+  sortSelector.addEventListener('change', () => {
+    // allow ProductList to re-render immediately, then update breadcrumb
+    setTimeout(renderListingBreadcrumb, 50);
+  });
+}
+
 function renderListingBreadcrumb() {
   const container = document.getElementById('site-breadcrumb');
   if (!container) return;
@@ -36,7 +45,10 @@ function renderListingBreadcrumb() {
   }
 
   const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
-  const count = Array.isArray(myList.list) ? myList.list.length : 0;
+
+  // Prefer DOM count (in case data source shape differs). Fall back to myList.list length.
+  const domCount = document.querySelectorAll('.product-list > li').length;
+  const count = domCount || (Array.isArray(myList.list) ? myList.list.length : 0);
 
   const nav = document.createElement('nav');
   nav.setAttribute('aria-label', 'Breadcrumb');
