@@ -69,7 +69,7 @@ function renderListingBreadcrumb() {
   const liCat = document.createElement('li');
   liCat.className = 'breadcrumb-item current';
   liCat.setAttribute('aria-current', 'page');
-  liCat.textContent = `${formattedCategory} -> (${count} items)`;
+  liCat.textContent = `${formattedCategory}  (${count} items)`;
   ol.appendChild(liCat);
 
   nav.appendChild(ol);
