@@ -693,3 +693,36 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* Breadcrumbs (added) */
+#breadcrumbs {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.breadcrumb-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.breadcrumb-item {
+  color: var(--dark-grey);
+}
+.breadcrumb-item::after {
+  content: "›";
+  margin-left: 0.5rem;
+  color: #777;
+}
+.breadcrumb-item.current::after {
+  content: "";
+}
+.breadcrumb-item a {
+  color: #0366d6;
+  text-decoration: none;
+}
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
