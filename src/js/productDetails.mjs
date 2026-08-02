@@ -127,13 +127,22 @@ function renderBreadcrumbFromPage(product) {
     liHome.appendChild(aHome);
     ol.appendChild(liHome);
 
-    // Category (if available) - for product page we show only the category (no count)
+    
+    // Category (if available)
     if (categoryName) {
         const liCat = document.createElement('li');
-        liCat.className = 'breadcrumb-item current';
-        liCat.setAttribute('aria-current', 'page');
+        liCat.className = 'breadcrumb-item';
         liCat.textContent = categoryName;
         ol.appendChild(liCat);
+    }
+
+    // Product name — this is the current page
+    if (productName) {
+        const liProduct = document.createElement('li');
+        liProduct.className = 'breadcrumb-item current';
+        liProduct.setAttribute('aria-current', 'page');
+        liProduct.textContent = productName;
+        ol.appendChild(liProduct);
     }
 
     // If we have a site breadcrumb container, insert there; otherwise put above title in product-detail
